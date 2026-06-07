@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -eu
 
@@ -17,7 +17,8 @@ cleanup() {
 
 trap cleanup SIGINT SIGTERM
 
-for ((i=0; i<$CONTAINER_COUNT; i++)); do
+i=0
+while [ "$i" -lt "$CONTAINER_COUNT" ]; do
   podman \
     --storage-driver=vfs \
     --root "$STORAGE_ROOT" \
@@ -25,6 +26,8 @@ for ((i=0; i<$CONTAINER_COUNT; i++)); do
     run --rm -p $((29050 + i)):9050 \
     "$IMAGE_NAME" \
     sh -c "(echo SocksPort 0.0.0.0:9050 > /etc/tor/torrc) && tor" &
+
+  i=$((i + 1))
 done
 
 wait
