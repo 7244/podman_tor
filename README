@@ -1,0 +1,5 @@
+this abomination opens 16 containers and runs tor process inside. also exports socks5 listen port to host (29050 + i).
+
+run ./build.sh then ./run.sh
+
+you can test them with ./test.sh
