@@ -5,7 +5,9 @@ set -eu
 . ./config
 
 [ -n "${PODMAN_TOR_UNIT:-}" ] || exec systemd-run --user --pty --same-dir --quiet --collect \
-  -p Delegate=yes -E PODMAN_TOR_UNIT=1 "$(realpath "$0")"
+  -p Delegate=yes -E PODMAN_TOR_UNIT=1 \
+  -E IMAGE_NAME -E STORAGE_ROOT -E RUN_ROOT -E CONTAINER_COUNT \
+  "$(realpath "$0")"
 
 for i in $(seq 0 $((CONTAINER_COUNT - 1))); do
   podman --storage-driver=vfs --root "$STORAGE_ROOT" --runroot "$RUN_ROOT" \
